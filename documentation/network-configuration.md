@@ -2,36 +2,39 @@
 
 ## VirtualBox NAT Network
 
+The lab uses a VirtualBox NAT Network named `NetworkWalks`.
+
 | Setting | Value |
 | --- | --- |
-| Name | `NetworkWalks` |
+| Network name | `NetworkWalks` |
 | IPv4 network | `10.0.0.0/24` |
 | Gateway | `10.0.0.1` |
 | DHCP | Disabled |
 
-The network was created on the Ubuntu host with:
+The network was created and started on the Ubuntu host with:
 
 ```bash
 VBoxManage natnetwork add --netname NetworkWalks --network "10.0.0.0/24" --enable --dhcp off
 VBoxManage natnetwork start --netname NetworkWalks
 ```
 
-Inspect configured NAT Networks:
+To inspect the configured NAT Networks:
 
 ```bash
 VBoxManage list natnetworks
 ```
 
-## Kali guest addressing
+## Kali guest IPv4 configuration
 
-| Setting | Planned value |
+| Setting | Value |
 | --- | --- |
+| Interface | `eth0` |
 | IPv4 address | `10.0.0.2/24` |
-| Prefix | `/24` |
 | Default gateway | `10.0.0.1` |
 | DNS resolvers | `8.8.8.8`, `1.1.1.1` |
+| IPv6 | Disabled for this connection |
 
-DHCP is disabled on this NAT Network. Kali was configured with a static IPv4 address using NetworkManager:
+The static configuration was applied through NetworkManager:
 
 ```bash
 sudo nmcli connection modify "Wired connection 1" \
@@ -45,9 +48,9 @@ sudo nmcli connection down "Wired connection 1"
 sudo nmcli connection up "Wired connection 1"
 ```
 
-## Guest-side verification
+## Verification commands
 
-The following checks were run inside Kali:
+The following commands were run inside Kali:
 
 ```bash
 ip -br address
@@ -57,14 +60,14 @@ ping -c 4 1.1.1.1
 getent hosts kali.org
 ```
 
-## Recorded verification results
+## Observed results
 
-| Check | Observed result |
+| Check | Result |
 | --- | --- |
-| `eth0` address | `10.0.0.2/24` |
+| Interface address | `eth0` has `10.0.0.2/24` |
 | Default route | `default via 10.0.0.1 dev eth0` |
-| Gateway ping | 4 transmitted, 4 received, 0% packet loss |
-| External IP ping (`1.1.1.1`) | 4 transmitted, 4 received, 0% packet loss |
-| DNS lookup (`kali.org`) | Successful; IPv6 addresses returned |
+| Gateway connectivity | 4 packets received; 0% packet loss |
+| External IP connectivity | 4 packets received from `1.1.1.1`; 0% packet loss |
+| DNS resolution | `kali.org` resolved successfully |
 
-The captured terminal output confirms the guest received the intended static address and route, the gateway and external IP were reachable, and DNS resolution worked.
+These results confirm that the guest's static IPv4 configuration, default route, outbound connectivity, and DNS resolution were working when tested.
