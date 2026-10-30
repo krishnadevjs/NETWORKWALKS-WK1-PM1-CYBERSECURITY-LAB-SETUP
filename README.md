@@ -1,59 +1,78 @@
-# NetworkWalks Cybersecurity Lab Setup
+# NetworkWalks Cybersecurity Lab
 
-A hands-on cybersecurity lab built with **Oracle VirtualBox** and **Kali Linux** for the NetworkWalks Cybersecurity Internship — Week 1 Project (WK1-PM1).
+**Program:** NetworkWalks Cybersecurity Internship  
+**Project:** Week 1 — Project Module 1 (WK1-PM1)  
+**Platform:** Oracle VirtualBox and Kali Linux
 
-This repository documents preparation of the virtual lab, network configuration, Kali Linux installation, connectivity validation, and troubleshooting.
+This repository documents the setup and validation of a virtual cybersecurity lab hosted on Ubuntu. It includes the lab architecture, network configuration, verification results, and supporting evidence.
 
-> **Project status:** In progress. The Kali Linux 2026.3 prebuilt VirtualBox appliance has been imported and booted. The static IPv4 configuration, gateway connectivity, internet connectivity, and DNS resolution have been verified.
+## Project overview
 
-## Lab objectives
-
-- Prepare a host system for virtualization.
-- Create a VirtualBox NAT Network using the `10.0.0.0/24` subnet.
-- Install Kali Linux in a virtual machine.
-- Configure a static IP address for the Kali guest.
-- Enable clipboard integration, drag and drop, and a shared downloads folder.
-- Verify gateway access, internet connectivity, and DNS resolution.
-- Capture evidence and document setup issues and their resolutions.
+The lab uses a VirtualBox NAT Network to connect a Kali Linux virtual machine to the internet while maintaining a dedicated virtual subnet. The Kali guest is configured with a static IPv4 address.
 
 ## Host environment
 
 | Component | Configuration |
 | --- | --- |
-| Host operating system | Ubuntu 26.04.1 LTS |
+| Operating system | Ubuntu 26.04.1 LTS |
 | Virtualization platform | Oracle VirtualBox 7.2.6 |
-| Archive utility | 7-Zip 26.00 |
-| Host hardware | Lenovo Legion 5 (15ARH05) |
 | Processor | AMD Ryzen 5 4600H |
-| Memory | 14 GiB RAM |
+| Host memory | 14 GiB |
+| Archive utility | 7-Zip 26.00 |
 
-## Planned virtual machine configuration
+## Virtual machine
 
-| Setting | Planned value |
+| Setting | Configuration |
 | --- | --- |
-| VM name | `NetworkWalks-Kali` |
-| Guest operating system | Kali Linux (64-bit) |
-| Memory | 4096 MB |
-| Virtual CPUs | 2 |
-| Virtual disk | 80.09 GB (imported appliance) |
-| Network attachment | NAT Network |
+| Guest operating system | Kali Linux 2026.3 |
+| CPU allocation | 2 virtual CPUs |
+| Virtual disk | Approximately 80 GB |
+| Network attachment | NAT Network — `NetworkWalks` |
 
-These are the intended VM settings; the VM configuration and installation will be confirmed after setup.
+The VM was imported from the prebuilt Kali VirtualBox appliance.
 
-## Network design
+## Network configuration
 
-| Item | Value |
+| Parameter | Value |
 | --- | --- |
-| VirtualBox network mode | NAT Network |
-| Network name | `NetworkWalks` |
-| Subnet | `10.0.0.0/24` |
+| VirtualBox network | `NetworkWalks` |
+| Network mode | NAT Network |
+| IPv4 subnet | `10.0.0.0/24` |
 | Gateway | `10.0.0.1` |
 | DHCP | Disabled |
-| Kali address | `10.0.0.2/24` |
-| Default gateway | `10.0.0.1` |
-| Configured DNS resolvers | `8.8.8.8`, `1.1.1.1` |
+| Kali interface | `eth0` |
+| Kali static address | `10.0.0.2/24` |
+| DNS resolvers | `8.8.8.8`, `1.1.1.1` |
 
-**Verified:** The `NetworkWalks` NAT Network was created with DHCP disabled. Inside Kali, `eth0` has `10.0.0.2/24`, the default route is via `10.0.0.1`, gateway and external-IP pings both passed with 0% packet loss, and `kali.org` resolved successfully.
+### Connectivity validation
+
+The following results were observed inside Kali:
+
+| Test | Result |
+| --- | --- |
+| IPv4 address on `eth0` | `10.0.0.2/24` |
+| Default route | Via `10.0.0.1` |
+| Gateway ping | 4/4 replies; 0% packet loss |
+| External IP ping (`1.1.1.1`) | 4/4 replies; 0% packet loss |
+| DNS lookup for `kali.org` | Successful |
+
+## Implementation status
+
+| Component | Status |
+| --- | --- |
+| Ubuntu host preparation | Complete |
+| VirtualBox installation and virtualization checks | Complete |
+| NAT Network creation | Complete |
+| Kali appliance import and boot | Complete |
+| Static IPv4 configuration | Complete |
+| Gateway and internet connectivity | Verified |
+| DNS resolution | Verified |
+| Guest Additions and desktop integration | In progress |
+| Shared downloads folder | Pending |
+| Final VM snapshot | Pending |
+| Supporting screenshots | To be added |
+
+The status table reflects work completed and verified to date. Pending items will be updated after testing.
 
 ## Repository structure
 
@@ -65,52 +84,20 @@ These are the intended VM settings; the VM configuration and installation will b
 │   ├── network-configuration.md
 │   └── troubleshooting.md
 └── screenshots/
-    └── .gitkeep
 ```
-
-## Setup record
-
-| Area | Current status |
-| --- | --- |
-| Host preparation and virtualization checks | Completed |
-| VirtualBox and 7-Zip availability | Verified |
-| NAT Network creation | Completed |
-| Kali VM import and boot | Completed |
-| Kali Linux 2026.3 guest available and booted | Completed (prebuilt appliance) |
-| Static IP configuration in Kali | Verified |
-| Guest Additions and integration features | Pending |
-| Shared folder configuration | Pending |
-| Gateway, internet, and DNS tests | Passed |
-| Final VM snapshot | Pending |
-
-Statuses will be updated as each step is completed and evidence is collected.
 
 ## Evidence
 
-Add genuine screenshots to `screenshots/` as the lab is built. Suggested evidence:
+Screenshots will be added to the `screenshots/` directory as each configuration item is completed. Evidence should show the relevant VirtualBox settings or Kali terminal output.
 
-- VirtualBox NAT Network configuration
-- Kali VM hardware and network settings
-- Kali desktop after installation
-- Guest IP address and default route
-- Successful gateway, internet, and DNS tests
-- Shared folder mounted in Kali
-- Final VirtualBox snapshot
-
-Do not add passwords, recovery keys, personal tokens, or other secrets to screenshots or repository files.
+Before committing screenshots, check that they do not expose passwords, recovery keys, personal tokens, or unrelated personal information.
 
 ## Documentation
 
 - [Lab architecture](documentation/lab-architecture.md)
 - [Network configuration](documentation/network-configuration.md)
-- [Troubleshooting notes](documentation/troubleshooting.md)
+- [Troubleshooting](documentation/troubleshooting.md)
 
-## Safety and scope
+## Safety
 
-Use this lab only for learning and authorized security testing. Test only systems you own or systems for which you have explicit written permission and a clearly defined scope. Do not scan or attack third-party systems without authorization.
-
-## Program
-
-**NetworkWalks Cybersecurity Internship — Week 1 Project (WK1-PM1)**
-
-This repository is a work log and technical record. It will be updated with verified configuration details, test results, screenshots, and troubleshooting notes as the lab setup progresses.
+This environment is intended for education and authorized security testing. Test only systems you own or systems for which you have explicit permission and a defined scope.
