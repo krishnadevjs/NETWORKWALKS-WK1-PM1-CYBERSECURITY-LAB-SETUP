@@ -4,7 +4,7 @@ A hands-on cybersecurity lab built with **Oracle VirtualBox** and **Kali Linux**
 
 This repository documents preparation of the virtual lab, network configuration, Kali Linux installation, connectivity validation, and troubleshooting.
 
-> **Project status:** In progress. The VirtualBox NAT Network has been created and started. Kali installation and guest-level validation are not yet documented as complete.
+> **Project status:** In progress. The Kali Linux 2026.3 prebuilt VirtualBox appliance has been imported and booted. The static IPv4 configuration, gateway connectivity, internet connectivity, and DNS resolution have been verified.
 
 ## Lab objectives
 
@@ -35,7 +35,7 @@ This repository documents preparation of the virtual lab, network configuration,
 | Guest operating system | Kali Linux (64-bit) |
 | Memory | 4096 MB |
 | Virtual CPUs | 2 |
-| Virtual disk | 60 GB, dynamically allocated |
+| Virtual disk | 80.09 GB (imported appliance) |
 | Network attachment | NAT Network |
 
 These are the intended VM settings; the VM configuration and installation will be confirmed after setup.
@@ -49,11 +49,11 @@ These are the intended VM settings; the VM configuration and installation will b
 | Subnet | `10.0.0.0/24` |
 | Gateway | `10.0.0.1` |
 | DHCP | Disabled |
-| Planned Kali address | `10.0.0.2/24` |
-| Planned default gateway | `10.0.0.1` |
-| Planned DNS resolver | `8.8.8.8` |
+| Kali address | `10.0.0.2/24` |
+| Default gateway | `10.0.0.1` |
+| Configured DNS resolvers | `8.8.8.8`, `1.1.1.1` |
 
-**Verified on the host:** The `NetworkWalks` NAT Network was created with the subnet above, DHCP disabled, and the network start command completed without an error. Guest IP, routing, DNS, and internet access still need to be verified inside Kali.
+**Verified:** The `NetworkWalks` NAT Network was created with DHCP disabled. Inside Kali, `eth0` has `10.0.0.2/24`, the default route is via `10.0.0.1`, gateway and external-IP pings both passed with 0% packet loss, and `kali.org` resolved successfully.
 
 ## Repository structure
 
@@ -75,12 +75,12 @@ These are the intended VM settings; the VM configuration and installation will b
 | Host preparation and virtualization checks | Completed |
 | VirtualBox and 7-Zip availability | Verified |
 | NAT Network creation | Completed |
-| Kali VM creation | Pending |
-| Kali Linux installation | Pending |
-| Static IP configuration in Kali | Pending |
+| Kali VM import and boot | Completed |
+| Kali Linux 2026.3 guest available and booted | Completed (prebuilt appliance) |
+| Static IP configuration in Kali | Verified |
 | Guest Additions and integration features | Pending |
 | Shared folder configuration | Pending |
-| Gateway, internet, and DNS tests | Pending |
+| Gateway, internet, and DNS tests | Passed |
 | Final VM snapshot | Pending |
 
 Statuses will be updated as each step is completed and evidence is collected.
