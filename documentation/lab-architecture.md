@@ -1,39 +1,54 @@
 # Lab Architecture
 
-## Purpose
-This document describes the intended VirtualBox lab for the NetworkWalks Week 1 Project (WK1-PM1).
+## Overview
 
-## Topology
+This document describes the virtual lab created for the NetworkWalks Cybersecurity Internship, Week 1 Project Module 1 (WK1-PM1).
+
+The environment consists of an Ubuntu host, Oracle VirtualBox, and a Kali Linux 2026.3 virtual machine connected through a dedicated NAT Network.
+
+## Network topology
+
 ```text
-                  Host computer
-                 Ubuntu 26.04.1
+                  Ubuntu host
                        |
-                 Oracle VirtualBox
+                Oracle VirtualBox
                        |
-              NAT Network: NetworkWalks
-                  10.0.0.0/24
+          NAT Network: NetworkWalks
+                 10.0.0.0/24
                        |
-              Gateway: 10.0.0.1
+               Gateway: 10.0.0.1
                        |
-             Kali Linux virtual machine
-                Planned IP: 10.0.0.2
+              Kali Linux guest
+                eth0: 10.0.0.2/24
 ```
 
-The NAT Network provides the virtual machine with network connectivity through the host while allowing VMs attached to the same NAT Network to communicate with one another.
+## Host environment
 
-## Host configuration
-- Operating system: Ubuntu 26.04.1 LTS
-- VirtualBox: 7.2.6
-- Processor: AMD Ryzen 5 4600H
-- Memory: 14 GiB
+| Component | Configuration |
+| --- | --- |
+| Operating system | Ubuntu 26.04.1 LTS |
+| VirtualBox | 7.2.6 |
+| Processor | AMD Ryzen 5 4600H |
+| Memory | 14 GiB |
 
-## Planned guest configuration
-- VM name: `NetworkWalks-Kali`
-- Guest OS: Kali Linux 64-bit
-- RAM: 4096 MB
-- CPU: 2 virtual CPUs
-- Disk: 60 GB dynamically allocated
-- Network adapter: NAT Network named `NetworkWalks`
+## Guest environment
 
-## Current implementation state
-The VirtualBox NAT Network named `NetworkWalks` has been created for `10.0.0.0/24`, with DHCP disabled and gateway `10.0.0.1`. The Kali virtual machine and guest network configuration remain to be completed and verified.
+- Operating system: Kali Linux 2026.3
+- Deployment method: Prebuilt VirtualBox appliance
+- Virtual CPUs: 2
+- Virtual disk: Approximately 80 GB
+- Network adapter: NAT Network — `NetworkWalks`
+
+## Network parameters
+
+- Subnet: `10.0.0.0/24`
+- Gateway: `10.0.0.1`
+- DHCP: Disabled
+- Kali address: `10.0.0.2/24`
+- DNS resolvers: `8.8.8.8` and `1.1.1.1`
+
+## Validation
+
+The Kali guest was assigned the configured static IPv4 address. Tests confirmed gateway reachability, external IP connectivity, and DNS resolution. See [Network Configuration](network-configuration.md) for commands and observed results.
+
+Guest Additions, shared-folder access, and the final VM snapshot remain outstanding and will be documented after verification.
