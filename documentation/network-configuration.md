@@ -22,20 +22,32 @@ Inspect configured NAT Networks:
 VBoxManage list natnetworks
 ```
 
-## Planned Kali guest addressing
+## Kali guest addressing
 
 | Setting | Planned value |
 | --- | --- |
-| IPv4 address | `10.0.0.2` |
+| IPv4 address | `10.0.0.2/24` |
 | Prefix | `/24` |
 | Default gateway | `10.0.0.1` |
-| DNS resolver | `8.8.8.8` |
+| DNS resolvers | `8.8.8.8`, `1.1.1.1` |
 
-DHCP is disabled on this NAT Network, so the guest will need a static IPv4 configuration.
+DHCP is disabled on this NAT Network. Kali was configured with a static IPv4 address using NetworkManager:
+
+```bash
+sudo nmcli connection modify "Wired connection 1" \
+  ipv4.method manual \
+  ipv4.addresses 10.0.0.2/24 \
+  ipv4.gateway 10.0.0.1 \
+  ipv4.dns "8.8.8.8 1.1.1.1" \
+  ipv6.method disabled
+
+sudo nmcli connection down "Wired connection 1"
+sudo nmcli connection up "Wired connection 1"
+```
 
 ## Guest-side verification
 
-After configuring the guest, run these commands inside Kali and record the actual output:
+The following checks were run inside Kali:
 
 ```bash
 ip -br address
@@ -45,11 +57,14 @@ ping -c 4 1.1.1.1
 getent hosts kali.org
 ```
 
-Expected checks:
-1. The guest interface has the intended `10.0.0.2/24` address.
-2. The routing table has a default route through `10.0.0.1`.
-3. The gateway responds.
-4. An external IP responds.
-5. DNS resolution returns an address for `kali.org`.
+## Recorded verification results
 
-These are verification steps, not claimed results. Add observed results and date after testing.
+| Check | Observed result |
+| --- | --- |
+| `eth0` address | `10.0.0.2/24` |
+| Default route | `default via 10.0.0.1 dev eth0` |
+| Gateway ping | 4 transmitted, 4 received, 0% packet loss |
+| External IP ping (`1.1.1.1`) | 4 transmitted, 4 received, 0% packet loss |
+| DNS lookup (`kali.org`) | Successful; IPv6 addresses returned |
+
+The captured terminal output confirms the guest received the intended static address and route, the gateway and external IP were reachable, and DNS resolution worked.
